@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DSA Visualizer</title>
+    <style>
+        body { font-family: sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; margin-bottom: 10px; }
+        h2 { color: #fff; background: #343a40; padding: 10px; border-radius: 5px; margin-top: 30px; }
+        .card { border: 1px solid #e3e6f0; padding: 20px; margin-bottom: 20px; border-radius: 5px; background: #fff; }
+        h3 { margin-top: 0; color: #4e73df; }
+        input[type="text"], input[type="number"] { padding: 8px; width: 50%; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px; }
+        button { background: #4e73df; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2e59d9; }
+        .result { margin-bottom: 30px; padding: 20px; background: #d1e7dd; border: 1px solid #badbcc; color: #0f5132; border-radius: 5px; text-align: center; }
+        .result strong { font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Data Structures & Algorithms</h1>
+
+    {% if result is not none %}
+    <div class="result">
+        <p>Algorithm: <strong>{{ algo_name }}</strong></p>
+        <p>Input: {{ input_val }}</p>
+        <hr>
+        <p>Result: <strong>{{ result }}</strong></p>
+    </div>
+    {% endif %}
+
+    <h2>Sliding Window</h2>
+
+    <div class="card">
+        <h3>1. Best Time to Buy/Sell Stock</h3>
+        <form method="POST">
+            <input type="hidden" name="algo" value="stock">
+            <input type="text" name="stock_input" placeholder="7, 1, 5, 3, 6, 4" required>
+            <button type="submit">Calculate</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>2. Longest Substring Without Repeats</h3>
+        <form method="POST">
+            <input type="hidden" name="algo" value="substring">
+            <input type="text" name="substring_input" placeholder="abcabcbb" required>
+            <button type="submit">Calculate</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>3. Longest Repeating Char Replacement</h3>
+        <form method="POST">
+            <input type="hidden" name="algo" value="replacement">
+            <input type="text" name="rep_string" placeholder="AABABBA" required>
+            <input type="number" name="rep_k" placeholder="K (e.g. 1)" style="width: 80px;" required>
+            <button type="submit">Calculate</button>
+        </form>
+    </div>
+
+    <h2>Two Pointers</h2>
+
+    <div class="card">
+        <h3>1. Valid Palindrome</h3>
+        <form method="POST">
+            <input type="hidden" name="algo" value="palindrome">
+            <input type="text" name="pal_string" placeholder="A man, a plan, a canal: Panama" required>
+            <button type="submit">Check</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>2. Two Sum II (Sorted Array)</h3>
+        <form method="POST">
+            <input type="hidden" name="algo" value="twosum">
+            <input type="text" name="twosum_input" placeholder="2, 7, 11, 15" required>
+            <input type="number" name="twosum_target" placeholder="Target" style="width: 80px;" required>
+            <button type="submit">Calculate</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>3. 3Sum</h3>
+        <form method="POST">
+            <input type="hidden" name="algo" value="threesum">
+            <input type="text" name="threesum_input" placeholder="-1, 0, 1, 2, -1, -4" required>
+            <button type="submit">Calculate</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
