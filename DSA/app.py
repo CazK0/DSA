@@ -1,8 +1,28 @@
 from flask import Flask, render_template, request
 from src.sliding_window import max_profit, length_of_longest_substring, character_replacement
 from src.two_pointers import is_palindrome, two_sum_sorted, three_sum
+from src.fast_slow import ListNode, has_cycle, middle_node, detect_cycle
 
 app = Flask(__name__)
+
+
+def create_linked_list(arr, pos=-1):
+    if not arr: return None
+    head = ListNode(arr[0])
+    curr = head
+    nodes = [head]
+
+    for i in range(1, len(arr)):
+        node = ListNode(arr[i])
+        curr.next = node
+        curr = node
+        nodes.append(node)
+
+    if pos != -1 and 0 <= pos < len(nodes):
+        curr.next = nodes[pos]
+
+    return head
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -12,7 +32,7 @@ def index():
 
     if request.method == 'POST':
         algo = request.form.get('algo')
-        
+
         try:
             if algo == 'stock':
                 raw = request.form.get('stock_input')
@@ -20,7 +40,7 @@ def index():
                 result = max_profit(prices)
                 input_val = raw
                 algo_name = "Best Time to Buy/Sell Stock"
-            
+
             elif algo == 'substring':
                 s = request.form.get('substring_input')
                 result = length_of_longest_substring(s)
@@ -55,10 +75,39 @@ def index():
                 input_val = raw
                 algo_name = "3Sum"
 
+            elif algo == 'middle_node':
+                raw = request.form.get('middle_input')
+                nums = [int(x.strip()) for x in raw.split(',')]
+                head = create_linked_list(nums)
+                mid = middle_node(head)
+                result = mid.val if mid else 'None'
+                input_val = raw
+                algo_name = "Middle of Linked List"
+
+            elif algo == 'has_cycle':
+                raw = request.form.get('cycle_input')
+                pos = int(request.form.get('cycle_pos'))
+                nums = [int(x.strip()) for x in raw.split(',')]
+                head = create_linked_list(nums, pos)
+                result = has_cycle(head)
+                input_val = f"List: {raw}, Pos: {pos}"
+                algo_name = "Linked List Cycle"
+
+            elif algo == 'detect_cycle':
+                raw = request.form.get('detect_input')
+                pos = int(request.form.get('detect_pos'))
+                nums = [int(x.strip()) for x in raw.split(',')]
+                head = create_linked_list(nums, pos)
+                start_node = detect_cycle(head)
+                result = start_node.val if start_node else 'None'
+                input_val = f"List: {raw}, Pos: {pos}"
+                algo_name = "Detect Cycle Start"
+
         except Exception as e:
             result = f"Error: {e}"
 
     return render_template('index.html', result=result, input_val=input_val, algo_name=algo_name)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
