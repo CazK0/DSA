@@ -2,9 +2,9 @@ from flask import Flask, render_template, request
 from src.sliding_window import max_profit, length_of_longest_substring, character_replacement
 from src.two_pointers import is_palindrome, two_sum_sorted, three_sum
 from src.fast_slow import ListNode, has_cycle, middle_node, detect_cycle
+from src.trees import Solution, build_tree, tree_to_list
 
 app = Flask(__name__)
-
 
 def create_linked_list(arr, pos=-1):
     if not arr: return None
@@ -23,6 +23,15 @@ def create_linked_list(arr, pos=-1):
 
     return head
 
+def parse_tree_input(raw_input):
+    vals = []
+    for x in raw_input.split(','):
+        x = x.strip()
+        if x.lower() == 'none' or x.lower() == 'null' or x == '':
+            vals.append(None)
+        else:
+            vals.append(int(x))
+    return vals
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -32,7 +41,7 @@ def index():
 
     if request.method == 'POST':
         algo = request.form.get('algo')
-
+        
         try:
             if algo == 'stock':
                 raw = request.form.get('stock_input')
@@ -40,7 +49,7 @@ def index():
                 result = max_profit(prices)
                 input_val = raw
                 algo_name = "Best Time to Buy/Sell Stock"
-
+            
             elif algo == 'substring':
                 s = request.form.get('substring_input')
                 result = length_of_longest_substring(s)
@@ -103,11 +112,29 @@ def index():
                 input_val = f"List: {raw}, Pos: {pos}"
                 algo_name = "Detect Cycle Start"
 
+            elif algo == 'invert_tree':
+                raw = request.form.get('tree_input')
+                vals = parse_tree_input(raw)
+                root = build_tree(vals)
+                sol = Solution()
+                inverted = sol.invertTree(root)
+                result = tree_to_list(inverted)
+                input_val = raw
+                algo_name = "Invert Binary Tree"
+
+            elif algo == 'max_depth':
+                raw = request.form.get('depth_input')
+                vals = parse_tree_input(raw)
+                root = build_tree(vals)
+                sol = Solution()
+                result = sol.maxDepth(root)
+                input_val = raw
+                algo_name = "Maximum Depth of Binary Tree"
+
         except Exception as e:
             result = f"Error: {e}"
 
     return render_template('index.html', result=result, input_val=input_val, algo_name=algo_name)
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
